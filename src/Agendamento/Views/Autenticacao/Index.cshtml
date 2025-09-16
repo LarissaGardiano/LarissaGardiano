@@ -1,0 +1,53 @@
+﻿@model Agendamento.Infra.CrossCutting.Util.ViewModel.LoginViewModel
+@{
+    Layout = "../Shared/_Layout-login";
+    bool alerta = ViewBag.Alerta ?? false;
+}
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row mb-3" style="background-color: #14CA92;padding: 1em; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; color: white;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;">
+            <label style="font-size: 20px;">Área administrativa</label>
+        </div>
+    </div>
+</div>
+
+<form asp-controller="Autenticacao" asp-action="Autenticar" method="post" class="login-form">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="display: flex; justify-content: center; align-items: center; height: 70vh;">
+        <div class="card mb-3 p-3 col-xs-12 col-sm-12 col-md-12 col-lg-8" style="border: 0px solid white !important; border-radius: 15px;">
+            <div class="card-body" style="padding: 1rem 2rem 0em;">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+                        <div class="form-group">
+                            <b>E-mail</b>
+                            <input asp-for="Email" autocomplete="off" class="form-control" maxlength="200" type="text" placeholder="Digite seu e-mail">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-4">
+                        <div class="form-group">
+                            <b>Senha</b>
+                            <input asp-for="Senha" autocomplete="off" class="form-control" maxlength="200" type="password" placeholder="Digite sua senha">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                        <button type="submit" class="btn btn-success w-100"><span>Acessar</span></button>
+                    </div>
+
+                    <div class="mt-2" style="text-align: center; color: red;">
+                        @if (alerta)
+                        {
+                            <label>Login ou senha inválidos, revise e tente novamente</label>
+                        }
+                        else
+                        {
+                            <label style="height: 12px;"></label>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

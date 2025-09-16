@@ -1,0 +1,94 @@
+﻿@using Agendamento.Service.Entidades
+@{
+    var telefoneCliente = ViewBag.TelefoneCliente ?? string.Empty;
+    Salao salao = ViewBag.Salao ?? new Salao();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google" content="notranslate" />
+
+    <title>AgendEasy</title>
+    <link rel="icon" type="image/x-icon" href="~/img/logo.png">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.mask.js"></script>
+    <script src="~/lib/jquery/dist/jquery.blockUI.js"></script>
+    <script src="~/js/custom/custom-site.js"></script>
+    <script src="~/js/api-js/crud-api-js.js"></script>
+    <script src="~/js/custom/ajax-loading.js"></script>
+    <script src="~/lib/jquery/dist/jquery.lazyload.min.js"></script>
+    <script src="~/js/custom/verificar-cookies.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid">
+                <div class="row col-12">
+                    <div class="col-6">
+                        <img alt="Logo" src="../img/logo_projeto.png" id="logoImg" width="160" style="cursor:pointer;" />
+                    </div>
+                    <div class="col-6 text-end mt-1" style="left: 20px; position: relative;">
+                        <a type="button" class="btn btn-light" id="btnAbrirModalMeusAgendamentos"><i class="fa fa-calendar fa-lg"></i></a>
+                        <a type="button" class="btn btn-light" asp-controller="Home" asp-action="menu" asp-route-nomeSalao="@salao.Url"><i class="fa fa-home fa-lg"></i></a>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+
+            <div class="modal fade" id="modal-meus-agendamentos" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Consultar meus agendamentos</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-bottom: 16px">
+                                Informe o número do celular para agendar o serviço.
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group" style="margin-bottom: 4px;">
+                                        <input autocomplete="off" class="form-control mask-telefone" value="@telefoneCliente" maxlength="18" name="phone" type="tel" placeholder="Digite seu celular" id="meuTelefoneReservas" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer row mt-2">
+                                <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                                        <button class="btn btn-light w-100" data-bs-dismiss="modal" type="button">Voltar</button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                                        <button class="btn btn-success w-100" type="button" id="btnArmazenarTelefone"><span>Confirmar</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
+
+<script>
+    document.getElementById('logoImg').addEventListener('click', function () {
+        window.location.href = '/@salao.Url';
+    });
+</script>

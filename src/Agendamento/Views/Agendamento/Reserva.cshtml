@@ -1,0 +1,190 @@
+﻿@using Agendamento.Service.Entidades
+@using System.Globalization
+@using Newtonsoft.Json
+@model List<Atendente>
+@{
+    Salao salao = ViewBag.Salao ?? new Salao();
+    Servico servico = ViewBag.Servico ?? new Servico();
+    string telefoneCliente = ViewBag.TelefoneCliente ?? string.Empty;
+    string linkImagem = ViewBag.LinkImagem ?? string.Empty;
+}
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row mb-3" style="background-color: #14CA92;padding: 1em; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; color: white;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;">
+            <label style="font-size: 20px;">Faça seu agendamento</label>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Where(x => x.Status).Any())
+{
+    <div class="text-center sem-agendamentos">
+        <label class="row"><i class="fa fa-warning" style="font-size: 3em;"></i></label>
+        <label>Ainda não foram criados atendentes para o salão escolhido, aguarde alguns minutos e tente novamente</label>
+    </div>
+}
+else
+{
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center mt-3 mb-3">
+        <label>SELECIONE O <b>PROFISSIONAL</b></label>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-3">
+        <div class="d-flex flex-row justify-content-center lazy" style="overflow-x: auto;">
+            @foreach (var item in Model.Where(x => x.Status))
+            {
+                <div class="d-flex flex-column align-items-center mx-2 card-atendente no-select" id="btnCardAtendente" data-id="@item.IdAtendente">
+
+                    @if (String.IsNullOrEmpty(item.ImagemAtendente))
+                    {
+                        <div class="rounded-circle imagem-atendente">@item.Nome.First().ToString().ToUpper() @item.Nome.Split(" ").LastOrDefault().FirstOrDefault().ToString().ToUpper()</div>
+                    }
+                    else
+                    {
+                        <img alt="Foto do atendente @item.Nome" src="~/img/loading-gray.gif" data-src="/imagem-atendente/@item.ImagemAtendente" width="70" height="70" class="rounded-circle" />
+                    }
+
+                    <label class="card-title text-center mt-2">@item.Nome</label>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="estilo-hr" style="text-align: center;">
+    </div>
+
+    <div class="month text-center mt-3" id="mes-ano-selecionado"></div>
+    <div class="card mt-2" style="border: none; border-radius: 15px;">
+        <div class="card-body" style="padding: 1rem 1rem !important;">
+            <div class="text-center" style="overflow-x: auto;">
+                <div class="d-flex align-items-center no-select" style="justify-content: space-between; align-items: center !important;" id="conteudo-calendario">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <div id="conteudo-horarios"></div>
+    </div>
+
+
+    <div class="modal fade" id="modal-incluir-agendamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Finalizar agendamento</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mb-3" style="background-color: #eeeeee; border: 0px solid white !important; border-radius: 15px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <h5>@servico.Nome</h5>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <i class="fas fa-hourglass-start fa-sm"></i><label>&nbsp;@servico.Duracao minutos</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                                    <i class="far fa-credit-card fa-sm"></i><label>&nbsp;@servico.Valor.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                                    <i class="far fa-clock fa-sm"></i><label id="dataSelecionado"></label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <i class="far fa-user fa-sm"></i><label id="atendenteSelecionado"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <b for="phone">Nome</b>
+                                <input autocomplete="off" class="form-control only-text" maxlength="100" type="text" placeholder="Digite seu nome" id="meuNome">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <b for="phone">Celular (WhatsApp)</b>
+                                <input autocomplete="off" class="form-control mask-telefone" maxlength="18" value="@telefoneCliente" type="tel" placeholder="Digite seu celular" id="meuTelefone">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group" style="text-align: center; color: red;">
+                                <label id="mensagem-alerta"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer row mt-2">
+                        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                                <button class="btn btn-light w-100" data-bs-dismiss="modal" type="button">Voltar</button>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                                <button class="btn btn-success w-100" type="button" id="btnIncluirAgendamento"><span>Confirmar</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-sucesso-agendamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="card mb-3" style="background-color: #eeeeee; border: 0px solid white !important; border-radius: 15px;">
+                        <div class="card-body">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label>Agendamento realizado com sucesso</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-2">
+                                    <i class="fa fa-check" style="font-size: 2em; color: #14CA92; border: 2px solid #14CA92; padding: 10px; border-radius: 50%;"></i><label></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-2">
+                            <a class="btn btn-success w-100" type="button" href="/@salao.Url">Novo agendamento</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-2">
+                            <a class="btn btn-secondary w-100" type="button" asp-controller="Agendamento" asp-action="MeusAgendamentosPendentes"><span>Ver meus agendamentos</span></a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <button class="btn btn-light w-100" data-bs-dismiss="modal" type="button"><span>Voltar</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@Html.Hidden("urlIncluirAgendamento", Url.Action("Incluir", "Agendamento"))
+
+<script>
+    const Servico = @Html.Raw(JsonConvert.SerializeObject(servico));
+</script>
+
+<script src="~/js/custom/lazy-loading.js"></script>
+<script src="~/js/reserva/gerar-calendario.js"></script>
+<script src="~/js/reserva/verificar-agenda.js"></script>
+<script src="~/js/reserva/administrar-agendamento.js"></script>

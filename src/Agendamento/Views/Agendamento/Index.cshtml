@@ -1,0 +1,168 @@
+﻿@model List<MeuAgendamentoViewModel>
+@using Agendamento.Infra.CrossCutting.Util.Enums
+@using Agendamento.Infra.CrossCutting.Util.Extensions
+@using Agendamento.Infra.CrossCutting.Util.ViewModel
+@using Agendamento.Service.Entidades
+@{
+    Salao salao = ViewBag.Salao ?? new Salao();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+    var corPendentes = action.Contains("Pendentes") ? "btn-agend" : "btn-secondary";
+    var corHistorico = action.Contains("Historico") ? "btn-agend" : "btn-secondary";
+}
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="row mb-3" style="background-color: #14CA92;padding: 1em; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; color: white;">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;">
+            <label style="font-size: 20px;">Meus agendamentos</label>
+        </div>
+    </div>
+</div>
+<div class="mt-4 lazy">
+
+    <div class="row mt-3 mb-3">
+        <div class="col-6 mb-1">
+            <a class="btn @corPendentes w-100" asp-controller="Agendamento" asp-action="MeusAgendamentosPendentes">Pendentes</a>
+        </div>
+        <div class="col-6 mb-1">
+            <a class="btn @corHistorico w-100" asp-controller="Agendamento" asp-action="MeusAgendamentosHistorico">Histórico</a>
+        </div>
+    </div>
+
+
+    @foreach (var item in Model
+    .OrderBy(x =>
+    x.StatusEnum == StatusAgendamentoEnum.A ? 1 :
+    x.StatusEnum == StatusAgendamentoEnum.F ? 2 :
+    x.StatusEnum == StatusAgendamentoEnum.C ? 3 : 4)
+    .ThenBy(x => x.DataAgendamento))
+    {
+        var semana = item.DataAgendamento.ToLongDateString().FirstOrDefault().ToString().ToUpper() + item.DataAgendamento.ToLongDateString().Substring(1, item.DataAgendamento.ToLongDateString().Length - 1).Split(',').FirstOrDefault();
+        var dataAgendamento = item.DataAgendamento.ToShortDateString();
+        <div class="card mb-3 border-card-historico-@item.StatusEnum.PegarDescricao().ToLower()">
+            <div class="card-body">
+                <div class="row">
+
+                    @if (!String.IsNullOrEmpty(@item.ImagemAtendente))
+                    {
+                        <div class="col-md-2 col-lg-1 d-none d-md-block">
+                            <img alt="Foto do atendente @item.NomeAtendente" src="../img/loading-gray.gif" data-src="/imagem-atendente/@item.ImagemAtendente" width="70" height="70" class="rounded-circle" style="margin-top: 20px; border: 2px solid gray;" />
+                        </div>
+                        <div class="col-xs-10 col-sm-8 col-md-7 col-lg-8 mb-1" id="detalhes-agendamento-@item.IdAgendamento">
+                            <h5 class="card-title">@item.NomeAtendente</h5>
+                            <label class="col-12">@item.NomeServico</label>
+                            <label class="col-12"><i class="far fa-clock fa-sm"></i> @semana.Split('-').FirstOrDefault(), @dataAgendamento às @item.DataAgendamento.ToString("HH:mm")h</label>
+                            <label class="col-12"><i class="far fa-credit-card fa-sm"></i> @item.ValorServico.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-2 col-lg-1 d-none d-md-block">
+                            <div class="rounded-circle imagem-atendente" style="margin-top: 20px;">@item.NomeAtendente.First().ToString().ToUpper() @item.NomeAtendente.Split(" ").LastOrDefault().FirstOrDefault().ToString().ToUpper()</div>
+                        </div>
+                        <div class="col-xs-10 col-sm-8 col-md-7 col-lg-8 mb-1" id="detalhes-agendamento-@item.IdAgendamento">
+                            <h5 class="card-title">@item.NomeAtendente</h5>
+                            <label class="col-12">@item.NomeServico</label>
+                            <label class="col-12"><i class="far fa-clock fa-sm"></i> @semana.Split('-').FirstOrDefault(), @dataAgendamento às @item.DataAgendamento.ToString("HH:mm")h</label>
+                            <label class="col-12"><i class="far fa-credit-card fa-sm"></i> @item.ValorServico.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</label>
+                        </div>
+                    }
+
+                    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 text-end" style="white-space: nowrap;">
+                        @if (@item.StatusEnum == StatusAgendamentoEnum.A)
+                        {
+                            <label class="w-100-xs" id="label-@item.IdAgendamento"><i class="far fa-clock fa-sm" style="color: #ffd700"></i> @item.StatusEnum.PegarDescricao()</label>
+
+                            if (item.DataAgendamento >= DateTime.Now)
+                            {
+                                <button class="btn btn-danger btn-sm button-remover-agendamento btn-remover-@item.IdAgendamento" data-id="@item.IdAgendamento" id="btnAbrirModalCancelarAgendamento" title="Cancelar agendamento"><i class="fa fa-trash"></i></button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary btn-sm button-remover-agendamento btn-remover-@item.IdAgendamento" data-id="@item.IdAgendamento" id="btnAbrirModalAvisoCancelamento" title="Cancelar agendamento"><i class="fa fa-trash"></i></button>
+                            }
+                        }
+                        else if (@item.StatusEnum == StatusAgendamentoEnum.C)
+                        {
+                            <label class="w-100-xs label-status"><i class="fas fa-xmark fa-sm" style="color: indianred"></i> @item.StatusEnum.PegarDescricao()</label>
+                        }
+                        else
+                        {
+                            <label class="w-100-xs label-status"><i class="fas fa-check fa-sm" style="color: dimgray"></i> @item.StatusEnum.PegarDescricao()</label>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="modal-cancelar-agendamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Cancelar agendamento</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3" style="background-color: #eeeeee; border: 0px solid white !important; border-radius: 15px;">
+                    <div class="card-body">
+                        <div id="VerDetalheAgendamento"></div>
+                    </div>
+                </div>
+
+                <div class="row" style="text-align: center">
+                    <label>Tem certeza que deseja cancelar este agendamento?</label><br />
+                    <b>Atenção: Esta ação não poderá ser desfeita</b>
+                </div>
+
+                <div class="modal-footer row mt-2">
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                            <button class="btn btn-light w-100" data-bs-dismiss="modal" type="button">Voltar</button>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 mb-1">
+                            <button class="btn btn-agend w-100" type="button" id="btnConfirmarCancelamentoAgendamento" data-bs-dismiss="modal"><span>Cancelar</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-aviso-cancelar-agendamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Cancelar agendamento</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="text-align: center">
+                    <label>O cancelamento não é permitido, pois a data e hora deste agendamento já foram ultrapassadas.</label><br />
+                </div>
+
+                <div class="modal-footer row mt-2">
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                        <button class="btn btn-light w-100" data-bs-dismiss="modal" type="button">Voltar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count is 0)
+{
+    <div class="text-center sem-agendamentos mt-5">
+        <label class="row"><i class="fa fa-warning" style="font-size: 2em;"></i></label>
+        <label>Desculpe não encontramos nenhum agendamento para o telefone informado</label>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-2">
+            <a class="btn btn-light" type="button" href="/@salao.Url">Novo agendamento</a>
+        </div>
+    </div>
+}
+
+<script src="~/js/custom/lazy-loading.js"></script>
+<script src="~/js/reserva/cancelar-agendamento.js"></script>
