@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google" content="notranslate" />
+
+    <title>AgendEasy</title>
+    <link rel="icon" type="image/x-icon" href="~/img/logo.png">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.mask.js"></script>
+    <script src="~/lib/jquery/dist/jquery.blockUI.js"></script>
+    <script src="~/js/custom/custom-site.js"></script>
+    <script src="~/js/api-js/crud-api-js.js"></script>
+    <script src="~/js/custom/ajax-loading.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
+                            <img alt="Logo" id="logoImg" src="../img/logo_projeto.png" width="160" style="cursor:pointer;" />
+                        </div>
+                        <div class="col-6 text-end">
+                            <a type="button" class="btn btn-light" asp-controller="Home" asp-action="Index" title="Logout">Menu</a>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>
+
+<script>
+    document.getElementById('logoImg').addEventListener('click', function () {
+        window.location.href = '/';
+    });
+</script>

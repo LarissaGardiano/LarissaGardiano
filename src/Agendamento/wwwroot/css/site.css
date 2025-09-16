@@ -1,0 +1,559 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    background-color: #eeeeee;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.btn-light {
+    background-color: #f3f3f4 !important;
+    color: #515164 !important;
+    border: 1px solid dimgray;
+}
+
+    .btn-light:hover {
+        background-color: #cccccd !important;
+        border: 1px solid dimgray;
+    }
+
+
+.service-card {
+    height: auto;
+    margin-bottom: 8px;
+    padding: 1em;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.service-name {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 25px;
+    color: #1e1e31;
+    margin-bottom: 10px
+}
+
+.service-row {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: #fff;
+}
+
+.service-infos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.service-duration {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 15px;
+    color: #1e1e31;
+    margin-bottom: 4px;
+    display: flex;
+}
+
+.service-price {
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 15px;
+    color: #1e1e31;
+    display: flex;
+}
+
+hr {
+    margin: 0 !important;
+    color: grey !important;
+}
+
+.modal-footer {
+    padding: 0em !important;
+}
+
+@media (max-width: 580px) {
+    .w-100-xs {
+        width: 100% !important;
+    }
+}
+
+.sem-agendamentos {
+    font-size: 20px;
+    color: white;
+    background-color: #14CA92;
+    padding: 1em;
+    border-radius: 15px;
+}
+
+.card-atendente {
+    min-width: 8em;
+    cursor: pointer;
+}
+
+    .card-atendente > img {
+        border: 3px solid #dddddd;
+    }
+
+.container {
+    max-width: 90% !important;
+}
+
+.dia-semana {
+    cursor: pointer;
+}
+
+.card-atendente-selecionado {
+    background-color: #eeeeee;
+    padding: 1px;
+}
+
+    .card-atendente-selecionado > img {
+        border: 3px solid gray;
+    }
+
+    .card-atendente-selecionado > div {
+        border: 3px solid gray;
+    }
+
+    .card-atendente-selecionado > label {
+        font-weight: bold;
+    }
+
+.card-dia-selecionado {
+    border-radius: 50%;
+    color: #14CA92;
+}
+
+.dia-semana > div {
+    margin-bottom: 8px;
+}
+
+.desabilitar > div {
+    margin-bottom: 8px;
+}
+
+.no-select {
+    user-select: none; /* Impede a seleção de texto */
+    -webkit-user-select: none; /* Para navegadores baseados no WebKit */
+    -moz-user-select: none; /* Para Firefox */
+    -ms-user-select: none; /* Para Internet Explorer/Edge */
+}
+
+.card-hora {
+    padding: 5px 20px;
+    border-radius: 10px;
+    border: 0px solid #cccc;
+    margin: 7px;
+    cursor: pointer;
+    background-color: white;
+    min-width: 10em !important;
+}
+
+    .card-hora:hover {
+        background-color: #14CA92;
+        color: white;
+    }
+
+.desabilitar {
+    cursor: pointer;
+    cursor: not-allowed;
+    color: gray;
+}
+
+@media (max-width: 680px) {
+    .desabilitar {
+        width: 4em;
+    }
+
+    .dia-semana {
+        width: 4em;
+    }
+}
+
+@media (max-width: 580px) {
+    .desabilitar {
+        width: 4em;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .dia-semana {
+        width: 4em;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+}
+
+@media (max-width: 500px) {
+    .desabilitar {
+        width: 3em;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .dia-semana {
+        width: 3em;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+}
+
+@media (max-width: 380px) {
+    .desabilitar {
+        width: 3em;
+        font-size: 13px;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    .dia-semana {
+        width: 3em;
+        font-size: 13px;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        max-width: 95% !important;
+    }
+}
+
+.blockOverlay {
+    z-index: 1070 !important;
+}
+
+.blockPage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    z-index: 99999 !important;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+@media (max-width: 580px) {
+    .button-remover-agendamento {
+        margin-left: -30px;
+    }
+}
+
+@media (max-width: 575px) {
+    .button-remover-agendamento {
+        margin-top: -190px;
+        position: relative;
+    }
+}
+
+.border-card-historico-finalizado {
+    border: 0px solid white;
+    border-radius: 15px;
+    border-left: 5px solid dimgray;
+}
+
+.border-card-historico-agendado {
+    border: 0px solid white;
+    border-radius: 15px;
+    border-left: 5px solid #ffd700;
+}
+
+.border-card-historico-cancelado {
+    border: 0px solid white;
+    border-radius: 15px;
+    border-left: 5px solid indianred;
+}
+
+.btn-agend {
+    background-color: #14CA92;
+    border-color: #14CA92;
+    color: white;
+}
+
+    .btn-agend:focus {
+        background-color: #14CA92;
+        border-color: #14CA92;
+        color: white;
+        box-shadow: 0 0 0 0.25rem rgba(20, 202, 146, 0.5);
+    }
+
+    .btn-agend:hover {
+        background-color: #0F9971;
+        border-color: #0F9971;
+        color: white;
+    }
+
+
+.btn-light {
+    border: none !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.estilo-hr {
+    height: 4px !important;
+    border-bottom: 3px solid #14CA92;
+    opacity: 1 !important;
+    border-radius: 26px;
+    width: 40%;
+    margin: 0 auto;
+}
+
+.month {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+input[type="tel"] {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+input[type="time"] {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+input[type="datetime-local"] {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+.form-select {
+    border: none;
+    border-bottom: 1px solid #ced4da;
+}
+
+.card-header {
+    background-color: #14CA92;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 15px 15px 0px 0px !important;
+}
+
+.card-body {
+    padding: 1rem 2rem;
+}
+
+.back-gray {
+    background-color: gray !important;
+}
+
+.arredondar-lados {
+    border-radius: 15px 15px 15px 15px !important;
+}
+
+.tamanho-altura {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+    max-height: 10em;
+}
+
+.form-check-input:checked {
+    background-color: #14CA92;
+    border-color: #14CA92;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #eeeeee;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 15px;
+    border: 2px solid #eeeeee;
+}
+
+.fc-agenda-slots > tbody > tr {
+    height: 50px;
+}
+
+@media (max-width: 440px) {
+    .email-responsive {
+        width: 12em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.modal.fade .modal-dialog {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    -webkit-transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.modal.fade.show .modal-dialog {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    opacity: 1;
+}
+
+.imagem-atendente {
+    width: 70px;
+    height: 70px;
+    background-color: #14CA92;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fa-sm {
+    width: 18px;
+    margin-left: -5px;
+    text-align: center;
+}
+
+.fa-sm {
+    width: 18px;
+    margin-left: -5px;
+    text-align: center;
+}
+
+.fa-lg {
+    width: 25px;
+    margin-left: -5px;
+    text-align: center;
+}
+
+.fa-lg {
+    width: 25px;
+    margin-left: -5px;
+    text-align: center;
+}
+
+#carouselExampleIndicators {
+    margin: 0 auto;
+}
+
+.carousel-inner img {
+    object-fit: cover;
+    height: auto;
+}
+
+@media (max-width: 920px) {
+    .botoes-vendas {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+        .botoes-vendas > .btn-light {
+            margin-right: 10px;
+        }
+}
+
+
+
+
+
+.plan-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 2em;
+    background-color: white;
+    max-width: 28em;
+    text-align: left;
+    margin: 20px auto;
+}
+
+.plan-title {
+    font-size: 2rem;
+    color: #333;
+}
+
+.plan-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.old-price {
+    font-size: 0.9rem;
+    text-decoration: line-through;
+    color: #999;
+}
+
+.plan-features {
+    margin: 1em 0;
+    list-style: none;
+    padding: 0;
+}
+
+    .plan-features li {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+        .plan-features li i {
+            color: #14CA92;
+            margin-right: 10px;
+        }
+
+#imgClick1 {
+    display: block;
+}
+
+#imgClick2, #imgClick3, #imgClick4, #imgClick5 {
+    display: none;
+}
+
+.border-gray i {
+    color: #14CA92;
+}
+
+.border-gray span {
+    color: #14CA92;
+}
